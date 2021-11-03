@@ -4,6 +4,7 @@
   "deno.unstable": true,
   "deno.suggest.imports.hosts": {
     "https://deno.land": false,
-    "https://github.com": false
+    "https://github.com": false,
+    "https://raw.githubusercontent.com": false
   }
 }

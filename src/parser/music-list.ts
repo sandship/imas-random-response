@@ -1,9 +1,6 @@
 // global import
 import sampleSize from "https://github.com/lodash/lodash/raw/master/sampleSize.js";
-import {
-  DOMParser,
-  Element,
-} from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
+import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 
 // local common import
 import {
