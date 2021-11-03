@@ -1,8 +1,8 @@
 export type IntellectualProperty =
   | "765AS"
   | "DearlyStars"
-  | "Cinderella"
-  | "MillionStars"
+  | "CinderellaGirls"
+  | "MillionLive"
   | "SideM"
   | "ShinyColors"
   | "Unknown";
@@ -10,7 +10,7 @@ export type IntellectualProperty =
 export type IdolInformation = {
   name: string;
   ip: IntellectualProperty;
-  description?: string;
+  url?: string;
 };
 
 export type MusicInformation = {
