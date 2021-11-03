@@ -1,15 +1,19 @@
-import * as express from "https://raw.githubusercontent.com/NMathar/deno-express/master/mod.ts";
+import { Application, Router } from "https://deno.land/x/oak@v9.0.1/mod.ts";
 import { randomIdols, randomMusics } from "./src/handler.ts";
 
-const apiPrefix = "/api/v1.0";
+console.log("Listening on http://localhost:8080");
 
-const app = new express.App();
+const app = new Application();
 
-app.use(express.simpleLog());
-app.use(express.bodyParser.json());
+const router = new Router();
+router
+  .get("/", (context) => {
+    context.response.body = "hello";
+  })
+  .post("/idol", randomIdols)
+  .post("/music", randomMusics);
 
-app.get(apiPrefix + "/idol", randomIdols);
-app.get(apiPrefix + "/music", randomMusics);
+app.use(router.routes());
+app.use(router.allowedMethods());
 
-const server = await app.listen(8000, "0.0.0.0");
-console.log("running server: " + server.port);
+await app.listen({ port: 8080 });
