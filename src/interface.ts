@@ -1,10 +1,14 @@
 export type IntellectualProperty =
+  | "ALL"
   | "765AS"
   | "DearlyStars"
   | "CinderellaGirls"
   | "MillionLive"
   | "SideM"
   | "ShinyColors"
+  | "RADIO"
+  | "KR"
+  | "XENOGLOSSIA"
   | "Unknown";
 
 export type IdolInformation = {
@@ -16,7 +20,7 @@ export type IdolInformation = {
 export type MusicInformation = {
   name: string;
   ip: IntellectualProperty;
-  description?: string;
+  release?: string;
 };
 
 export type fetchOption = {

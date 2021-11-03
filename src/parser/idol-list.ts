@@ -11,14 +11,19 @@ import {
 type ImasparqlResponse = {
   results: {
     bindings: {
-      name: {"type": string , "xml:lang": "en" | "ja" , "value": string}
-      brand: {"type": string , "xml:lang": "en" | "ja" , "value": IntellectualProperty}
-      url: {"type": string , "xml:lang": "en" | "ja" , "value": string}
-    }[]
-  }
-}
+      name: { "type": string; "xml:lang": "en" | "ja"; "value": string };
+      brand: {
+        "type": string;
+        "xml:lang": "en" | "ja";
+        "value": IntellectualProperty;
+      };
+      url: { "type": string; "xml:lang": "en" | "ja"; "value": string };
+    }[];
+  };
+};
 
-const query = "https://sparql.crssnky.xyz/spql/imas/query?query=" + encodeURIComponent(`
+const query = "https://sparql.crssnky.xyz/spql/imas/query?query=" +
+  encodeURIComponent(`
 PREFIX schema: <http://schema.org/>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX imas: <https://sparql.crssnky.xyz/imasrdf/URIs/imas-schema.ttl#>
@@ -35,21 +40,21 @@ WHERE {
     imas:Brand ?brand;
     imas:IdolListURL ?url;
 }order by ?name
-`)
+`);
 
 export const fetchIdolList = async (
   option: fetchOption,
 ): Promise<IdolInformation[]> => {
+  const response = await fetch(query);
+  const fetchedData: ImasparqlResponse = JSON.parse(await response.text());
 
-  const response = await fetch(query)
-  const fetchedData: ImasparqlResponse = JSON.parse(await response.text())
-
-  const idols: IdolInformation[] = fetchedData.results.bindings.filter(idol => idol.name["xml:lang"] === "ja").map((idol): IdolInformation => ({
+  const idols: IdolInformation[] = fetchedData.results.bindings.filter((idol) =>
+    idol.name["xml:lang"] === "ja"
+  ).map((idol): IdolInformation => ({
     name: idol.name.value,
     ip: idol.brand.value,
-    url: idol.url.value
-  }))
+    url: idol.url.value,
+  }));
 
-  return sampleSize(idols, option.number)
+  return sampleSize(idols, option.number);
 };
-
