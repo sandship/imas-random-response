@@ -1,4 +1,4 @@
-export type IntellectualProperty =
+export type Brands =
   | "ALL"
   | "765AS"
   | "DearlyStars"
@@ -13,17 +13,26 @@ export type IntellectualProperty =
 
 export type IdolInformation = {
   name: string;
-  ip: IntellectualProperty;
+  brand: Brands;
   url?: string;
 };
 
 export type MusicInformation = {
   name: string;
-  ip: IntellectualProperty;
+  brand: Brands;
   release?: string;
 };
 
-export type fetchOption = {
+export type FetchOption = {
   number: number;
   seed?: number;
+  strategy?: Strategy;
+  brands?: Brands[];
 };
+
+type Strategy = "brand-even" | "character-even";
+
+export type PickupFunction = <T extends { brand: Brands }>(
+  candidated: T[],
+  option: { number: number },
+) => T[];

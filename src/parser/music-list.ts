@@ -3,14 +3,10 @@ import sampleSize from "https://github.com/lodash/lodash/raw/master/sampleSize.j
 import { DOMParser } from "https://deno.land/x/deno_dom@v0.1.16-alpha/deno-dom-wasm.ts";
 
 // local common import
-import {
-  fetchOption,
-  IntellectualProperty,
-  MusicInformation,
-} from "../interface.ts";
+import { Brands, FetchOption, MusicInformation } from "../interface.ts";
 
 const SOURCE_URL = "https://music765plus.com/全曲一覧#ALL";
-const CONTENTS_MAP = new Map<string, IntellectualProperty>([
+const CONTENTS_MAP = new Map<string, Brands>([
   ["合同", "ALL"],
   ["765", "765AS"],
   ["961", "765AS"],
@@ -30,8 +26,10 @@ const CONTENTS_MAP = new Map<string, IntellectualProperty>([
 ]);
 
 export const fetchMusicList = async (
-  option: fetchOption,
+  option: FetchOption,
 ): Promise<MusicInformation[]> => {
+  const { number, seed, strategy } = option;
+
   const response = await fetch(SOURCE_URL);
   const domtext = await response.text();
 
@@ -42,12 +40,16 @@ export const fetchMusicList = async (
   listItems?.forEach((node) => {
     const content = node.getElementsByTagName("td");
 
-    const ip = content[0]?.textContent;
+    const brand = content[0]?.textContent;
     const name = content[1]?.textContent;
     const release = content[3]?.textContent;
 
-    if (ip && name) {
-      musics.push({ ip: CONTENTS_MAP.get(ip) ?? "Unknown", name, release });
+    if (brand && name) {
+      musics.push({
+        brand: CONTENTS_MAP.get(brand) ?? "Unknown",
+        name,
+        release,
+      });
     }
   });
 
