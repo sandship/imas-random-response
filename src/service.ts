@@ -12,12 +12,27 @@ type fetchFunction = typeof fetchIdolList | typeof fetchMusicList;
 const randomListService = (fetch: fetchFunction) =>
   async (context: RouterContext): Promise<void> => {
     const body = await context.request.body().value ?? {} as PickOption;
+    console.log(
+      `[${new Date().toISOString()}][DEBUG]request received: ${
+        JSON.stringify(body)
+      }`,
+    );
+
     const picker = new RandomPicker(body);
 
-    context.response.body = JSON.stringify({
-      payload: picker.pick(await fetch()),
+    const payload = picker.pick(await fetch());
+    const response = JSON.stringify({
+      payload,
+      returnNum: payload.length,
     });
+
+    context.response.body = response;
     context.response.headers.set("content-type", "application/json");
+    console.log(
+      `[${new Date().toISOString()}][DEBUG]response send: ${
+        JSON.stringify(response)
+      }`,
+    );
   };
 
 export const randomIdolPickupService = randomListService(fetchIdolList);
