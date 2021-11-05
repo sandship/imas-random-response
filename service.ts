@@ -1,5 +1,8 @@
 import { Application, Router } from "https://deno.land/x/oak@v9.0.1/mod.ts";
-import { randomIdols, randomMusics } from "./src/handler.ts";
+import {
+  randomIdolPickupService,
+  randomMusicPickupService,
+} from "./src/service.ts"
 
 console.log("Listening on http://localhost:8080");
 
@@ -10,8 +13,8 @@ router
   .get("/", (context) => {
     context.response.body = "hello";
   })
-  .post("/idol", randomIdols)
-  .post("/music", randomMusics);
+  .post("/idol", randomIdolPickupService)
+  .post("/music", randomMusicPickupService);
 
 app.use(router.routes());
 app.use(router.allowedMethods());

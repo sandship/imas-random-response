@@ -1,29 +1,36 @@
-export type IntellectualProperty =
-  | "ALL"
-  | "765AS"
-  | "DearlyStars"
-  | "CinderellaGirls"
-  | "MillionLive"
-  | "SideM"
-  | "ShinyColors"
-  | "RADIO"
-  | "KR"
-  | "XENOGLOSSIA"
-  | "Unknown";
+export const BRANDS_LIST = [
+  "ALL",
+  "765AS",
+  "DearlyStars",
+  "CinderellaGirls",
+  "MillionLive",
+  "SideM",
+  "ShinyColors",
+  "RADIO",
+  "KR",
+  "XENOGLOSSIA",
+  "Unknown",
+] as const;
+export type Brands = typeof BRANDS_LIST[number];
 
 export type IdolInformation = {
   name: string;
-  ip: IntellectualProperty;
+  brand: Brands;
   url?: string;
 };
 
 export type MusicInformation = {
   name: string;
-  ip: IntellectualProperty;
+  brand: Brands;
   release?: string;
 };
 
-export type fetchOption = {
-  number: number;
+export type PickOption = {
+  number?: number;
+  limit?: number;
   seed?: number;
+  strategy?: Strategy;
+  brands?: Brands[];
 };
+
+export type Strategy = "brand-flat" | "full-flat";
