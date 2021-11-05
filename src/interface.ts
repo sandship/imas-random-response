@@ -1,15 +1,17 @@
-export type Brands =
-  | "ALL"
-  | "765AS"
-  | "DearlyStars"
-  | "CinderellaGirls"
-  | "MillionLive"
-  | "SideM"
-  | "ShinyColors"
-  | "RADIO"
-  | "KR"
-  | "XENOGLOSSIA"
-  | "Unknown";
+export const BRANDS_LIST = [
+  "ALL",
+  "765AS",
+  "DearlyStars",
+  "CinderellaGirls",
+  "MillionLive",
+  "SideM",
+  "ShinyColors",
+  "RADIO",
+  "KR",
+  "XENOGLOSSIA",
+  "Unknown",
+] as const;
+export type Brands = typeof BRANDS_LIST[number];
 
 export type IdolInformation = {
   name: string;
@@ -23,16 +25,12 @@ export type MusicInformation = {
   release?: string;
 };
 
-export type FetchOption = {
-  number: number;
+export type PickOption = {
+  number?: number;
+  limit?: number;
   seed?: number;
   strategy?: Strategy;
   brands?: Brands[];
 };
 
-type Strategy = "brand-even" | "character-even";
-
-export type PickupFunction = <T extends { brand: Brands }>(
-  candidated: T[],
-  option: { number: number },
-) => T[];
+export type Strategy = "brand-flat" | "full-flat";

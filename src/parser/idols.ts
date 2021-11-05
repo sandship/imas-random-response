@@ -1,8 +1,5 @@
-// global import
-import sampleSize from "https://github.com/lodash/lodash/raw/master/sampleSize.js";
-
 // local common import
-import { Brands, FetchOption, IdolInformation } from "../interface.ts";
+import { Brands, IdolInformation } from "../interface.ts";
 
 type ImasparqlResponse = {
   results: {
@@ -38,11 +35,7 @@ WHERE {
 }order by ?name
 `);
 
-export const fetchIdolList = async (
-  option: FetchOption,
-): Promise<IdolInformation[]> => {
-  const { number, seed, strategy } = option;
-
+export const fetchIdolList = async (): Promise<IdolInformation[]> => {
   const response = await fetch(query);
   const fetchedData: ImasparqlResponse = JSON.parse(await response.text());
 
@@ -54,5 +47,5 @@ export const fetchIdolList = async (
     url: idol.url.value,
   }));
 
-  return sampleSize(idols, option.number);
+  return idols;
 };

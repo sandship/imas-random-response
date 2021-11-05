@@ -1,9 +1,8 @@
 // global import
-import sampleSize from "https://github.com/lodash/lodash/raw/master/sampleSize.js";
 import { DOMParser } from "https://deno.land/x/deno_dom@v0.1.16-alpha/deno-dom-wasm.ts";
 
 // local common import
-import { Brands, FetchOption, MusicInformation } from "../interface.ts";
+import { Brands, MusicInformation } from "../interface.ts";
 
 const SOURCE_URL = "https://music765plus.com/全曲一覧#ALL";
 const CONTENTS_MAP = new Map<string, Brands>([
@@ -25,11 +24,7 @@ const CONTENTS_MAP = new Map<string, Brands>([
   ["XNG", "XENOGLOSSIA"],
 ]);
 
-export const fetchMusicList = async (
-  option: FetchOption,
-): Promise<MusicInformation[]> => {
-  const { number, seed, strategy } = option;
-
+export const fetchMusicList = async (): Promise<MusicInformation[]> => {
   const response = await fetch(SOURCE_URL);
   const domtext = await response.text();
 
@@ -53,5 +48,5 @@ export const fetchMusicList = async (
     }
   });
 
-  return sampleSize(musics, option.number);
+  return musics;
 };
