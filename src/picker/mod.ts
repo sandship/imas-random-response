@@ -3,15 +3,13 @@ import sampleSize from "https://github.com/lodash/lodash/raw/master/sampleSize.j
 import sample from "https://github.com/lodash/lodash/raw/master/sample.js";
 import shuffle from "https://github.com/lodash/lodash/raw/master/shuffle.js";
 
-import {
-  Brands,
-  BRANDS_LIST,
-  PickOption,
-  Strategy,
-} from "../interface.ts";
+import { Brands, BRANDS_LIST, PickOption, Strategy } from "../interface.ts";
 
 const DEFAULT_RETURN_NUM = 3;
 const random = new Random();
+
+const isNotUndefined = (arg: any): arg is Exclude<typeof arg, undefined> =>
+  typeof arg !== "undefined";
 
 type PickupFunction = <T extends { brand: Brands }>(
   array: T[],
@@ -20,7 +18,7 @@ type PickupFunction = <T extends { brand: Brands }>(
 export class RandomPicker {
   private readonly _pickNum: number;
   private readonly _strategy?: Strategy;
-  private readonly _brands: Brands[];
+  private _candidateBrand: Brands[];
 
   constructor(option: PickOption) {
     const { number, limit, strategy, brands } = option;
@@ -29,7 +27,7 @@ export class RandomPicker {
     this._pickNum = number ?? randomNum ?? DEFAULT_RETURN_NUM;
     this._strategy = strategy;
 
-    this._brands = brands ?? BRANDS_LIST.map(b => b)
+    this._candidateBrand = brands ?? BRANDS_LIST.map((b) => b);
   }
 
   private _dispatchPickFunction = (): PickupFunction => {
@@ -44,11 +42,15 @@ export class RandomPicker {
         return previous;
       }, new Map<Brands, T[]>());
 
-      const selectElm = (_: unknown): T => {
-        return boxes.get(sample(this._brands))?.pop() ?? selectElm(_);
+      const selectElm = (_: unknown): T | undefined => {
+        this._candidateBrand = this._candidateBrand.filter((brand) =>
+          (boxes.get(brand)?.length ?? 0) > 0
+        );
+        if (this._candidateBrand.length === 0) return undefined;
+        return boxes.get(sample(this._candidateBrand))?.pop() ?? selectElm(_);
       };
 
-      return [...Array(this._pickNum)].map(selectElm);
+      return [...Array(this._pickNum)].map(selectElm).filter(isNotUndefined);
     };
 
     switch (this._strategy) {
@@ -63,7 +65,7 @@ export class RandomPicker {
 
   pick: PickupFunction = (array) => {
     const brandFilteredArray = array.filter((elm) =>
-      this._brands.includes(elm.brand)
+      this._candidateBrand.includes(elm.brand)
     );
     const pickFunction = this._dispatchPickFunction();
 
