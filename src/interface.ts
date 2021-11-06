@@ -33,4 +33,5 @@ export type PickOption = {
   brands?: Brands[];
 };
 
-export type Strategy = "brand-flat" | "full-flat";
+export const STRATEGIES = ["brand-flat", "full-flat"] as const;
+export type Strategy = typeof STRATEGIES[number];

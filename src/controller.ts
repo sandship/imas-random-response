@@ -7,20 +7,22 @@ import { fetchMusicList } from "./parser/musics.ts";
 
 import { RandomPicker } from "./picker/mod.ts";
 
+import { page } from "./page/index.ts";
+
 type fetchFunction = typeof fetchIdolList | typeof fetchMusicList;
 
-const randomListService = (fetch: fetchFunction) =>
+const randomListController = (fetch: fetchFunction) =>
   async (context: RouterContext): Promise<void> => {
-    const body = await context.request.body().value ?? {} as PickOption;
+    const body: PickOption = await context.request.body().value;
     console.log(
       `[${new Date().toISOString()}][DEBUG]request received: ${
         JSON.stringify(body)
       }`,
     );
 
-    const picker = new RandomPicker(body);
+    // logic
+    const payload = new RandomPicker({...body, candidated: await fetch()} ?? {}).pick()
 
-    const payload = picker.pick(await fetch());
     const response = JSON.stringify({
       payload,
       returnNum: payload.length,
@@ -35,5 +37,9 @@ const randomListService = (fetch: fetchFunction) =>
     );
   };
 
-export const randomIdolPickupService = randomListService(fetchIdolList);
-export const randomMusicPickupService = randomListService(fetchMusicList);
+export const indexPage = (context: RouterContext): void => {
+  context.response.body = page;
+  context.response.headers.set("content-type", "text/html");
+};
+export const randomIdolPickupService = randomListController(fetchIdolList);
+export const randomMusicPickupService = randomListController(fetchMusicList);
