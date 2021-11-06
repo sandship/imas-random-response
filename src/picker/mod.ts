@@ -30,36 +30,35 @@ export class RandomPicker {
     this._candidateBrand = brands ?? BRANDS_LIST.map((b) => b);
   }
 
-  private _dispatchPickFunction = (): PickupFunction => {
-    const flatPickup: PickupFunction = (array) =>
-      sampleSize(array, this._pickNum);
+  private _flatPickup: PickupFunction = (array) =>
+    sampleSize(array, this._pickNum);
 
-    const brandFlatPickup: PickupFunction = <T extends { brand: Brands }>(
-      array: T[],
-    ) => {
-      const boxes = (shuffle(array) as T[]).reduce((previous, elm) => {
-        previous.set(elm.brand, [...(previous.get(elm.brand) ?? []), elm]);
-        return previous;
-      }, new Map<Brands, T[]>());
+  private _brandFlatPickup: PickupFunction = <T extends { brand: Brands }>(
+    array: T[],
+  ) => {
+    const boxes = (shuffle(array) as T[]).reduce((previous, elm) => {
+      previous.set(elm.brand, [...(previous.get(elm.brand) ?? []), elm]);
+      return previous;
+    }, new Map<Brands, T[]>());
 
-      const selectElm = (_: unknown): T | undefined => {
-        this._candidateBrand = this._candidateBrand.filter((brand) =>
-          (boxes.get(brand)?.length ?? 0) > 0
-        );
-        if (this._candidateBrand.length === 0) return undefined;
-        return boxes.get(sample(this._candidateBrand))?.pop() ?? selectElm(_);
-      };
-
-      return [...Array(this._pickNum)].map(selectElm).filter(isNotUndefined);
+    const selectElm = (_: unknown): T | undefined => {
+      this._candidateBrand = this._candidateBrand.filter((brand) =>
+        (boxes.get(brand)?.length ?? 0) > 0
+      );
+      if (this._candidateBrand.length === 0) return undefined;
+      return boxes.get(sample(this._candidateBrand))?.pop() ?? selectElm(_);
     };
 
+    return [...Array(this._pickNum)].map(selectElm).filter(isNotUndefined);
+  };
+  private _dispatchPickFunction = (): PickupFunction => {
     switch (this._strategy) {
       case "full-flat":
-        return flatPickup;
+        return this._flatPickup;
       case "brand-flat":
-        return brandFlatPickup;
+        return this._brandFlatPickup;
       default:
-        return flatPickup;
+        return this._flatPickup;
     }
   };
 
