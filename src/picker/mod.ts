@@ -15,13 +15,15 @@ type PickupFunction = <T extends { brand: Brands }>(
   array: T[],
 ) => T[];
 
-export class RandomPicker {
+export class RandomPicker<T extends { brand: Brands }> {
   private readonly _pickNum: number;
+  private readonly _candidated: T[];
   private readonly _strategy?: Strategy;
   private _candidateBrand: Brands[];
 
-  constructor(option: PickOption) {
-    const { number, limit, strategy, brands } = option;
+  constructor(option: PickOption & {candidated: T[]}) {
+    const { number, limit, strategy, brands, candidated } = option;
+    this._candidated = candidated
 
     const randomNum = limit ? random.int(1, limit) : undefined;
     this._pickNum = number ?? randomNum ?? DEFAULT_RETURN_NUM;
@@ -62,12 +64,11 @@ export class RandomPicker {
     }
   };
 
-  pick: PickupFunction = (array) => {
-    const brandFilteredArray = array.filter((elm) =>
+  pick = () => {
+    const brandFilteredArray = this._candidated.filter((elm) =>
       this._candidateBrand.includes(elm.brand)
     );
-    const pickFunction = this._dispatchPickFunction();
 
-    return pickFunction(brandFilteredArray);
+    return this._dispatchPickFunction()(brandFilteredArray);
   };
 }

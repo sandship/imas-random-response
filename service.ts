@@ -1,9 +1,10 @@
 import { Application, Router } from "https://deno.land/x/oak@v9.0.1/mod.ts";
 import logger from "https://deno.land/x/oak_logger@1.0.0/mod.ts";
 import {
+  indexPage,
   randomIdolPickupService,
   randomMusicPickupService,
-} from "./src/service.ts";
+} from "./src/controller.ts";
 
 console.log("Listening on http://localhost:8080");
 
@@ -13,9 +14,7 @@ app.use(logger.responseTime);
 
 const router = new Router();
 router
-  .get("/", (context) => {
-    context.response.body = "hello";
-  })
+  .get("/", indexPage)
   .post("/idol", randomIdolPickupService)
   .post("/music", randomMusicPickupService);
 
