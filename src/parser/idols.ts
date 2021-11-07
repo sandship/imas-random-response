@@ -15,8 +15,7 @@ type ImasparqlResponse = {
   };
 };
 
-const query = "https://sparql.crssnky.xyz/spql/imas/query?query=" +
-  encodeURIComponent(`
+const query = `
 PREFIX schema: <http://schema.org/>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX imas: <https://sparql.crssnky.xyz/imasrdf/URIs/imas-schema.ttl#>
@@ -33,10 +32,13 @@ WHERE {
     imas:Brand ?brand;
     imas:IdolListURL ?url;
 }order by ?name
-`);
+`;
+
+const url = "https://sparql.crssnky.xyz/spql/imas/query?query=" +
+  encodeURIComponent(query);
 
 export const fetchIdolList = async (): Promise<IdolInformation[]> => {
-  const response = await fetch(query);
+  const response = await fetch(url);
   const fetchedData: ImasparqlResponse = JSON.parse(await response.text());
 
   const idols: IdolInformation[] = fetchedData.results.bindings.filter((idol) =>
