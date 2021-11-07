@@ -21,7 +21,9 @@ const randomListController = (fetch: fetchFunction) =>
     );
 
     // logic
-    const payload = new RandomPicker({...body, candidated: await fetch()} ?? {}).pick()
+    const payload = new RandomPicker(
+      { ...body, candidated: await fetch() } ?? {},
+    ).pick();
 
     const response = JSON.stringify({
       payload,
