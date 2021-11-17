@@ -1,7 +1,4 @@
-import {
-  ConnectOptions,
-  MongoClient,
-} from "https://deno.land/x/mongo@v0.28.0/mod.ts";
+import { MongoClient } from "https://deno.land/x/mongo@v0.28.0/mod.ts";
 
 import { BaseInformation, DataType, FetchFunction } from "../interface.ts";
 
