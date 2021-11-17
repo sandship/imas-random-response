@@ -13,18 +13,19 @@ export const BRANDS_LIST = [
 ] as const;
 export type Brands = typeof BRANDS_LIST[number];
 
-export type IdolInformation = {
+export type BaseInformation = {
   name: string;
   brand: Brands;
+};
+export type IdolInformation = BaseInformation & {
   url?: string;
 };
+export type FetchIdolInformation = () => Promise<IdolInformation[]>;
 
-export type MusicInformation = {
-  name: string;
-  brand: Brands;
+export type MusicInformation = BaseInformation & {
   release?: string;
 };
-
+export type FetchMusicnformation = () => Promise<MusicInformation[]>;
 export type PickOption = {
   number?: number;
   limit?: number;
@@ -35,3 +36,6 @@ export type PickOption = {
 
 export const STRATEGIES = ["brand-flat", "full-flat"] as const;
 export type Strategy = typeof STRATEGIES[number];
+export type DataType = "music" | "idol";
+
+export type FetchFunction = FetchMusicnformation | FetchIdolInformation;
