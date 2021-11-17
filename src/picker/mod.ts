@@ -21,9 +21,9 @@ export class RandomPicker<T extends { brand: Brands }> {
   private readonly _strategy?: Strategy;
   private _candidateBrand: Brands[];
 
-  constructor(option: PickOption & {candidated: T[]}) {
+  constructor(option: PickOption & { candidated: T[] }) {
     const { number, limit, strategy, brands, candidated } = option;
-    this._candidated = candidated
+    this._candidated = candidated;
 
     const randomNum = limit ? random.int(1, limit) : undefined;
     this._pickNum = number ?? randomNum ?? DEFAULT_RETURN_NUM;

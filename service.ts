@@ -4,6 +4,7 @@ import {
   indexPage,
   randomIdolPickupService,
   randomMusicPickupService,
+  refreshListService,
 } from "./src/controller.ts";
 
 console.log("Listening on http://localhost:8080");
@@ -21,4 +22,7 @@ router
 app.use(router.routes());
 app.use(router.allowedMethods());
 
+setInterval(refreshListService, 1_000 * 60 * 10);
+
+await refreshListService();
 await app.listen({ port: 8080 });

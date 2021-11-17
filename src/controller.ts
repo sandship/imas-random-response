@@ -1,17 +1,13 @@
 import { RouterContext } from "https://deno.land/x/oak@v9.0.1/mod.ts";
 
-import { PickOption } from "./interface.ts";
-
+import { FetchFunction, PickOption } from "./interface.ts";
+import { fetchList, refreshList } from "./database/mod.ts";
 import { fetchIdolList } from "./parser/idols.ts";
 import { fetchMusicList } from "./parser/musics.ts";
-
 import { RandomPicker } from "./picker/mod.ts";
-
 import { page } from "./page/index.ts";
 
-type fetchFunction = typeof fetchIdolList | typeof fetchMusicList;
-
-const randomListController = (fetch: fetchFunction) =>
+const randomListController = (fetch: FetchFunction) =>
   async (context: RouterContext): Promise<void> => {
     const body: PickOption = await context.request.body().value;
     console.log(
@@ -21,7 +17,9 @@ const randomListController = (fetch: fetchFunction) =>
     );
 
     // logic
-    const payload = new RandomPicker({...body, candidated: await fetch()} ?? {}).pick()
+    const payload = new RandomPicker(
+      { ...body, candidated: await fetch() } ?? {},
+    ).pick();
 
     const response = JSON.stringify({
       payload,
@@ -37,9 +35,21 @@ const randomListController = (fetch: fetchFunction) =>
     );
   };
 
+export const refreshListService = async () => {
+  await Promise.allSettled([
+    refreshList({ fetch: fetchIdolList, datatype: "idol" }),
+    refreshList({ fetch: fetchMusicList, datatype: "music" }),
+  ]).catch(err => console.log(err))
+};
+
 export const indexPage = (context: RouterContext): void => {
   context.response.body = page;
   context.response.headers.set("content-type", "text/html");
 };
-export const randomIdolPickupService = randomListController(fetchIdolList);
-export const randomMusicPickupService = randomListController(fetchMusicList);
+
+export const randomIdolPickupService = randomListController(
+  await fetchList({ datatype: "idol" }),
+);
+export const randomMusicPickupService = randomListController(
+  await fetchList({ datatype: "music" }),
+);

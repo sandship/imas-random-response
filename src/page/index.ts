@@ -36,10 +36,16 @@ export const page = `<html>
 
   <h3>3. Reference</h3>
   <h4>3.1 Supported Brands</h4>
-  <ol>${BRANDS_LIST.map((brand) => "<li><code>" + brand + "</code></li>").join("")}</ol>
+  <ol>${
+  BRANDS_LIST.map((brand) => "<li><code>" + brand + "</code></li>").join("")
+}</ol>
 
   <h4>3.2 Supported Strategy</h4>
-  <ol>${STRATEGIES.map((strategy) => "<li><code>" + strategy + "</code></li>").join("")}</ol>
+  <ol>${
+  STRATEGIES.map((strategy) => "<li><code>" + strategy + "</code></li>").join(
+    "",
+  )
+}</ol>
   
 </body>
 </html>`;
