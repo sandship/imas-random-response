@@ -20,7 +20,7 @@ router
   .get("/", indexPage)
   .post("/idol", randomIdolPickupService)
   .post("/music", randomMusicPickupService)
-  .patch("/refresh", refreshListService);
+  // .patch("/refresh", refreshListService);
 
 app.use(router.routes());
 app.use(router.allowedMethods());
