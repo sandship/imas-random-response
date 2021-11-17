@@ -8,6 +8,8 @@ import {
 } from "./src/controller.ts";
 
 console.log("Listening on http://localhost:8080");
+setInterval(refreshListService, 1_000 * 60 * 60 * 24);
+await refreshListService();
 
 const app = new Application();
 app.use(logger.logger);
@@ -22,7 +24,4 @@ router
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-setInterval(refreshListService, 1_000 * 60 * 10);
-
-await refreshListService();
 await app.listen({ port: 8080 });

@@ -23,7 +23,7 @@ const randomListController = (fetch: FetchFunction) =>
 
     const response = JSON.stringify({
       payload,
-      returnNum: payload.length,
+      length: payload.length,
     });
 
     context.response.body = response;
@@ -35,11 +35,16 @@ const randomListController = (fetch: FetchFunction) =>
     );
   };
 
-export const refreshListService = async () => {
+export const refreshListService = async (context?: RouterContext) => {
   await Promise.allSettled([
     refreshList({ fetch: fetchIdolList, datatype: "idol" }),
     refreshList({ fetch: fetchMusicList, datatype: "music" }),
-  ]).catch(err => console.log(err))
+  ]);
+  // .catch((err) => {
+  //   context.response.body = err;
+  // }).then(() => {
+  //   context.response.body = "refreshed!";
+  // });
 };
 
 export const indexPage = (context: RouterContext): void => {
