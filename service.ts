@@ -4,12 +4,12 @@ import {
   indexPage,
   randomIdolPickupService,
   randomMusicPickupService,
-  // refreshListService,
+  refreshListService,
 } from "./src/controller.ts";
 
-// console.log("Listening on http://localhost:8080");
-// setInterval(refreshListService, 1_000 * 60 * 60 * 24);
-// await refreshListService();
+console.log("Listening on http://localhost:8080");
+setInterval(refreshListService, 1_000 * 60 * 60 * 4);
+await refreshListService();
 
 const app = new Application();
 app.use(logger.logger);
@@ -20,7 +20,6 @@ router
   .get("/", indexPage)
   .post("/idol", randomIdolPickupService)
   .post("/music", randomMusicPickupService)
-  // .patch("/refresh", refreshListService);
 
 app.use(router.routes());
 app.use(router.allowedMethods());
