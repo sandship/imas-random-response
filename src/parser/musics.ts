@@ -31,8 +31,7 @@ export const fetchMusicList = async (): Promise<MusicInformation[]> => {
   const document = new DOMParser().parseFromString(domtext, "text/html");
   const listItems = document?.getElementsByTagName("tr");
 
-  const musics: MusicInformation[] = [];
-  listItems?.forEach((node) => {
+  return listItems?.reduce((previousList, node): MusicInformation[] => {
     const content = node.getElementsByTagName("td");
 
     const brand = content[0]?.textContent;
@@ -40,13 +39,13 @@ export const fetchMusicList = async (): Promise<MusicInformation[]> => {
     const release = content[3]?.textContent;
 
     if (brand && name) {
-      musics.push({
+      previousList.push({
         brand: CONTENTS_MAP.get(brand) ?? "Unknown",
         name,
         release,
       });
     }
-  });
 
-  return musics;
+    return previousList;
+  }, new Array<MusicInformation>()) ?? [];
 };

@@ -4,9 +4,12 @@ import {
   indexPage,
   randomIdolPickupService,
   randomMusicPickupService,
+  refreshListService,
 } from "./src/controller.ts";
 
 console.log("Listening on http://localhost:8080");
+setInterval(refreshListService, 1_000 * 60 * 60 * 24);
+await refreshListService();
 
 const app = new Application();
 app.use(logger.logger);
