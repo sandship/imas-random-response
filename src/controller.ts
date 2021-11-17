@@ -35,15 +35,11 @@ const randomListController = (fetch: FetchFunction) =>
     );
   };
 
-export const refreshListService = async (context?: RouterContext) => {
+export const refreshListService = async () => {
   await Promise.allSettled([
     refreshList({ fetch: fetchIdolList, datatype: "idol" }),
     refreshList({ fetch: fetchMusicList, datatype: "music" }),
-  ]).catch((err) => {
-    if (context) context.response.body = err;
-  }).then(() => {
-    if (context) context.response.body = "refreshed!";
-  });
+  ])
 };
 
 export const indexPage = (context: RouterContext): void => {
@@ -52,8 +48,8 @@ export const indexPage = (context: RouterContext): void => {
 };
 
 export const randomIdolPickupService = randomListController(
-  await fetchList({ datatype: "idol" }),
+  fetchList({ datatype: "idol" }),
 );
 export const randomMusicPickupService = randomListController(
-  await fetchList({ datatype: "music" }),
+  fetchList({ datatype: "music" }),
 );
