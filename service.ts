@@ -4,7 +4,7 @@ import {
   indexPage,
   randomIdolPickupService,
   randomMusicPickupService,
-  refreshListService,
+  // refreshListService,
 } from "./src/controller.ts";
 
 // console.log("Listening on http://localhost:8080");
