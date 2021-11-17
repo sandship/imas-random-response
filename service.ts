@@ -19,7 +19,8 @@ const router = new Router();
 router
   .get("/", indexPage)
   .post("/idol", randomIdolPickupService)
-  .post("/music", randomMusicPickupService);
+  .post("/music", randomMusicPickupService)
+  .patch("/refresh", refreshListService);
 
 app.use(router.routes());
 app.use(router.allowedMethods());

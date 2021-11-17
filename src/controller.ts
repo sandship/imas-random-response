@@ -39,12 +39,11 @@ export const refreshListService = async (context?: RouterContext) => {
   await Promise.allSettled([
     refreshList({ fetch: fetchIdolList, datatype: "idol" }),
     refreshList({ fetch: fetchMusicList, datatype: "music" }),
-  ]);
-  // .catch((err) => {
-  //   context.response.body = err;
-  // }).then(() => {
-  //   context.response.body = "refreshed!";
-  // });
+  ]).catch((err) => {
+    if (context) context.response.body = err;
+  }).then(() => {
+    if (context) context.response.body = "refreshed!";
+  });
 };
 
 export const indexPage = (context: RouterContext): void => {
