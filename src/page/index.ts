@@ -3,6 +3,7 @@ import { BRANDS_LIST, STRATEGIES } from "../interface.ts";
 export const page = `<html>
 <title>IM@S Random Response</title>
 <head>
+  <meta http-equiv="content-type" charset="UTF-8">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
