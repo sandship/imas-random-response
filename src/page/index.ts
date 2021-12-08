@@ -6,8 +6,14 @@ export const page = `<html>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Imas Random Response API</h1>
-  <text>this API is for the game <code>We're JUNGO</code>, which is played in IM@S OTAKU CAMP TRAINING. </text>
+<h1>Imas Random Response API</h1>
+<text>this API is for the game <code>We're JUNGO</code>, which is played in IM@S OTAKU CAMP TRAINING. </text>
+
+<h1>Acknowledgement</h1>
+<ol>
+<li><a href="https://sparql.crssnky.xyz/imas/">im@sparql</a> as IDOL Data Source</li>
+<li><a href="https://music765plus.com">アイドルマスター楽曲メモ</a> as Music Data Source</li>
+</ol>
 
   <h2>Sample Usage</h2>
   <h3>1. Get Music List</h3>
